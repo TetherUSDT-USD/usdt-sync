@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Your Custom Asset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            margin: 0;
+        }
+        .card {
+            text-align: center;
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border: 1px solid #292929;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+        .action-btn {
+            background-color: #00a35c; /* Official Tether Green color token */
+            color: white;
+            padding: 16px 32px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .action-btn:hover {
+            background-color: #00874d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Add Custom Token to Wallet</h1>
+        <!-- Triggers the verified EIP-747 watchAsset injector on click -->
+        <button class="action-btn" onclick="syncCustomToken()">🟢 Sync Usdt Asset & Logo</button>
+    </div>
+
+    <script>
+    async function syncCustomToken() {
+        // Confirms a Web3 provider (Trust Wallet browser or MetaMask) is actively running
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                // Injects your exact contract configuration directly into the wallet app layout
+                await window.ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20',
+                        options: {
+                            // Locks onto your exact deployed Base network contract address
+                            address: '0x022112B1134749Dd08B7FFDBf2cf93aF71Cc73Db', 
+                            symbol: 'Usdt', 
+                            decimals: 18, 
+                            image: 'https://cryptologos.cc', // Transparent PNG image link
+                        },
+                    },
+                });
+                console.log("Token sync configuration successfully pushed to wallet application UI.");
+            } catch (error) {
+                console.error("User declined the dashboard interface sync command:", error);
+            }
+        } else {
+            alert('No Web3 wallet browser connection detected! Make sure to open this page inside your mobile Trust Wallet App Browser.');
+        }
+    }
+    </script>
+
+</body>
+</html>
